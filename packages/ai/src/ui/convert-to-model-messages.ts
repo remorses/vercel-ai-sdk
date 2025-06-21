@@ -14,8 +14,8 @@ import {
 Converts an array of messages from useChat into an array of CoreMessages that can be used
 with the AI core functions (e.g. `streamText`).
  */
-export function convertToModelMessages<TOOLS extends ToolSet = never>(
-  messages: Array<Omit<UIMessage, 'id'>>,
+export function convertToModelMessages<TOOLS extends ToolSet = ToolSet>(
+  messages: Array<Omit<UIMessage<any, any, TOOLS>, 'id'>>,
   options?: { tools?: TOOLS },
 ): ModelMessage[] {
   const tools = options?.tools ?? ({} as TOOLS);
