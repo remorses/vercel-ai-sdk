@@ -652,6 +652,7 @@ class DefaultStreamTextResult<TOOLS extends ToolSet, OUTPUT, PARTIAL_OUTPUT>
       retriedError?: any;
     }) => Promise<void>;
     let retryRequested = false;
+    let errorStreamFinishSuppressed = false;
 
     // Variables to capture current step state for retry
     let currentStepNumber: number;
@@ -681,8 +682,9 @@ class DefaultStreamTextResult<TOOLS extends ToolSet, OUTPUT, PARTIAL_OUTPUT>
       EnrichedStreamPart<TOOLS, PARTIAL_OUTPUT>
     >({
       async transform(chunk, controller) {
-        // Only forward non-error chunks immediately, errors are handled below
-        if (chunk.part.type !== 'error') {
+        // Only forward non-error and non-finish chunks immediately
+        // Errors and finish events are handled specially below
+        if (chunk.part.type !== 'error' && chunk.part.type !== 'finish') {
           controller.enqueue(chunk); // forward the chunk to the next stream
         }
 
@@ -884,9 +886,13 @@ class DefaultStreamTextResult<TOOLS extends ToolSet, OUTPUT, PARTIAL_OUTPUT>
         }
 
         if (part.type === 'finish') {
-          if (retryRequested) {
-            return;
+          // If this is an error finish and retry was requested, suppress it
+          if (part.finishReason === 'error' && retryRequested) {
+            errorStreamFinishSuppressed = true;
+            return; // Don't forward or record finish event from error stream when retrying
           }
+          // Forward the finish event to the output stream
+          controller.enqueue(chunk);
           recordedTotalUsage = part.totalUsage;
           recordedFinishReason = part.finishReason;
         }
