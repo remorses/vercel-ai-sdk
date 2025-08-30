@@ -1,0 +1,49 @@
+{
+  "logo": {
+    "dark": "/logo/light.svg",
+    "light": "/logo/dark.svg"
+  },
+  "name": "vercel-ai-sdk",
+  "footer": {
+    "links": [
+      {
+        "items": [
+          {
+            "href": "https://localhost:7664",
+            "label": "Holocron"
+          }
+        ],
+        "header": "Documentation"
+      }
+    ],
+    "socials": {
+      "github": "https://github.com/remorses",
+      "twitter": "https://x.com/__morse"
+    }
+  },
+  "navbar": {
+    "links": [
+      {
+        "href": "https://localhost:7664",
+        "icon": "document",
+        "label": "Home"
+      }
+    ],
+    "primary": {
+      "href": "https://localhost:7664/login",
+      "type": "button",
+      "label": "Get Started"
+    }
+  },
+  "siteId": "01K3X8JC298NK0ZQDGS7JWZ8M1",
+  "$schema": "https://localhost:7664/holocron.json",
+  "domains": [
+    "vercel-ai-sdk-7uyl75nd.localhost",
+    "vercel-ai-sdk-7uyl75nd.holocronsites.com"
+  ],
+  "favicon": {
+    "dark": "/favicon.svg",
+    "light": "/favicon.svg"
+  },
+  "disableEditButton": false
+}
